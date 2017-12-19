@@ -59,7 +59,7 @@ public class GameController : MonoBehaviour {
         PrepareObjectToTakeOrExamine(roomNavigation.currentRoom);
     }
     void PrepareObjectToTakeOrExamine(Room currenRoom){
-        for (int i = 0; i < currenRoom.interactableObjectsInRoom.Length; i++){
+        for (int i = 0; i < currenRoom.interactableObjectsInRoom.Count; i++){
             string descriptionNotInInventory = interactableItems.GetObjectNotInInventory(currenRoom, i);
             if(descriptionNotInInventory != null){
                 interactionDescriptionsInRoom.Add(descriptionNotInInventory);

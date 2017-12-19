@@ -91,11 +91,18 @@ public class TimeCounting : MonoBehaviour {
 		}
 	}
 	protected void CompleteTime(){
-		
 		String_Time = alt_hr_time + ":" + min_Time + dayMark;
 		String_Time = "Time: " + String_Time;
 	}
 	public void DisableThis(){
 		enabled = false;
+	}
+	public Clock ReturnTimeIn24(){
+		Clock clock = new Clock();
+		
+		clock.Hour = int.Parse(hr_Time);
+		clock.Min = int.Parse(min_Time);
+
+		return clock;
 	}
 }

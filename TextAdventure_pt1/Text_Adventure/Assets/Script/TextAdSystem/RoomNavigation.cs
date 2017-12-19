@@ -23,8 +23,10 @@ public class RoomNavigation : MonoBehaviour {
             if(currentRoom.exits [i].exitDescription != "")
                 controller.interactionDescriptionsInRoom.Add (currentRoom.exits [i].exitDescription);
         }
-        exitDictionary.Add(currentRoom.exitWithDoor.keyString, currentRoom.exitWithDoor.valueRoom);
-        DoorInRoom = currentRoom.exitWithDoor.connectedDoor;
+        if(currentRoom.exitWithDoor.connectedDoor != null){
+            exitDictionary.Add(currentRoom.exitWithDoor.keyString, currentRoom.exitWithDoor.valueRoom);
+            DoorInRoom = currentRoom.exitWithDoor.connectedDoor;
+        }
 
     }
 
@@ -61,6 +63,13 @@ public class RoomNavigation : MonoBehaviour {
             return true;
         }
         return false;
+    }
+    public bool TryLockDoor(){
+        if(DoorInRoom != null){
+            DoorInRoom.LockDoor();
+            return true;
+        }
+        return false;  
     }
     public void ClearExits()
     {

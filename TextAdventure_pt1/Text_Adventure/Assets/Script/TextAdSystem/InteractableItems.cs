@@ -18,7 +18,7 @@ public class InteractableItems : MonoBehaviour {
 	public string GetObjectNotInInventory(Room currentRoom, int i){
 		InteractableObject interactableInRoom = currentRoom.interactableObjectsInRoom[i];
 		if(!nounsInInventory.Contains(interactableInRoom.noun)){
-			nounsInRoom.Add(interactableInRoom.noun);
+			_nounsInRoom.Add(interactableInRoom.noun);
 			return interactableInRoom.description;
 		}
 		
@@ -65,15 +65,15 @@ public class InteractableItems : MonoBehaviour {
 	public void ClearCollections(){
 		examineDictionary.Clear();
 		takeDictionary.Clear();
-		nounsInRoom.Clear();
+		_nounsInRoom.Clear();
 	}
 	public Dictionary<string,string> Take(string[] separatedInputWords){
 		string noun = separatedInputWords[1];
 
-		if(nounsInRoom.Contains(noun)){
+		if(_nounsInRoom.Contains(noun)){
 			nounsInInventory.Add(noun);
 			AddActionResponsesToUseDictionary();
-			nounsInRoom.Remove(noun);
+			_nounsInRoom.Remove(noun);
 			return takeDictionary;
 		}
 		else{
