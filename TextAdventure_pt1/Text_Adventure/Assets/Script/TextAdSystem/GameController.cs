@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour {
     public InputAction[] inputActions{get{return _inputActions;}}
     public RoomNavigation roomNavigation{get; private set;}
     public InteractableItems interactableItems{get; private set;}
+    public InteractablePersons interactablePersons{get; private set;}
     private List<string> _interactionDescriptionsInRoom = new List<string>();
     public List<string> interactionDescriptionsInRoom{get{return _interactionDescriptionsInRoom;}}
     public List<string> Nonesense_Reply;
@@ -21,6 +22,7 @@ public class GameController : MonoBehaviour {
     {
         interactableItems = GetComponent<InteractableItems>();
         roomNavigation = GetComponent<RoomNavigation> (); 
+        interactablePersons = GetComponent<InteractablePersons>();
     }
 
     void Start()
@@ -57,6 +59,7 @@ public class GameController : MonoBehaviour {
     {
         roomNavigation.UnpackExitsInRoom ();
         PrepareObjectToTakeOrExamine(roomNavigation.currentRoom);
+        PreparePersonToInteract(roomNavigation.currentRoom);
     }
     void PrepareObjectToTakeOrExamine(Room currenRoom){
         for (int i = 0; i < currenRoom.interactableObjectsInRoom.Count; i++){
@@ -76,6 +79,12 @@ public class GameController : MonoBehaviour {
                     interactableItems.takeDictionary.Add(interactableInRoom.noun, interaction.textResponse);
                 }
             }
+        }
+    }
+    void PreparePersonToInteract(Room currentRoom){
+        for(int i = 0; i<currentRoom.PersonInRoom.Count; i++){
+            string descriptionPersonInRoom = interactablePersons.GetPersonInThisRoom(currentRoom,i);
+            _interactionDescriptionsInRoom.Add(descriptionPersonInRoom);
         }
     }
 
@@ -102,5 +111,22 @@ public class GameController : MonoBehaviour {
         int rnd = Random.Range(0, Nonesense_Reply.Count);
 
         LogStringWithReturn(Nonesense_Reply[rnd]);
+    }
+	public void RemovePersonFromRoom(Room _room, Person _person){
+        Debug.Assert(_room.PersonInRoom.Contains(_person));
+        if(_room.PersonInRoom.Contains(_person)){
+            _room.PersonInRoom.Remove(_person);
+        }
+		//Also need to display action log;
+	}
+	public void AddPersonToRoom(Room _room, Person _person){
+        Debug.Assert(!_room.PersonInRoom.Contains(_person));
+        if(!_room.PersonInRoom.Contains(_person)){
+            _room.PersonInRoom.Add(_person);
+        }
+	}
+    public void MovePersonToRoom(Room _room, Person _person){
+        RemovePersonFromRoom(interactablePersons.FindRoomThePersonIn(_person),_person);
+        AddPersonToRoom(_room, _person);
     }
 }

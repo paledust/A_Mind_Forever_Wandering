@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RoomNavigation : MonoBehaviour {
     public Room currentRoom;
+    [SerializeField] List<Room> roomList;
+    public List<Room> RoomList{get{return roomList;}}
     Dictionary<string, Room> exitDictionary = new Dictionary<string, Room> ();
     Dictionary<string, Exit> StringToExit = new Dictionary<string, Exit>();
     Door DoorInRoom;
@@ -29,7 +31,6 @@ public class RoomNavigation : MonoBehaviour {
         }
 
     }
-
     public void AttemptToChangeRooms(string directionNoun)
     {
         if (exitDictionary.ContainsKey (directionNoun)) {
@@ -40,7 +41,7 @@ public class RoomNavigation : MonoBehaviour {
                 controller.DisplayRoomText ();
             }
             //If this is an exit with door
-            if(currentRoom.exitWithDoor.connectedDoor != null){
+            else if(currentRoom.exitWithDoor.connectedDoor != null){
                 if(!currentRoom.exitWithDoor.IF_Locked){
                     currentRoom = exitDictionary [directionNoun];
                     controller.LogStringWithReturn ("He head off to the " + directionNoun);
@@ -55,7 +56,6 @@ public class RoomNavigation : MonoBehaviour {
         } else {
             controller.LogStringWithReturn ("There is no path to the " + directionNoun);
         }
-
     }
     public bool TryUnlockDoor(){
         if(DoorInRoom != null){

@@ -99,4 +99,7 @@ public class InteractableItems : MonoBehaviour {
 			controller.LogStringWithReturn("There is no "+nounToUse + " in your inventory to use.");
 		}
 	}
+    public void RemoveInteractableObjectFromRoom(InteractableObject obj, Room room){
+
+    }
 }

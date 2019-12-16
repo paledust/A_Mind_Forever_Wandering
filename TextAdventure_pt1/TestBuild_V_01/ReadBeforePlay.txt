@@ -1,0 +1,38 @@
+There's only a few features comparing to the orignial one:
+you can "Go" to different room.
+you can "unlock" door, but also try unlock something else.
+you can "look" around.
+you can "Wait" for certain minutes.
+you can press "esc" to exit game.
+
+Jill will do different things based on the time of the day.
+She will not interact with player yet.
+
+Just those stuff are already so much for me to develop in a short time, but I enjoy the whole process so much that for sure I'm gonna
+keep copying until it feels good to add my own thought in it.
+
+Why so hard?
+1.Those verb is not much, but I need to define the behavior for different applying to item.
+For example: Unlock door, means you can unlock a door in the room, but what if players type in unlock novel. and what if the players
+are not in a room that has a door, and what if the door is already unlocked, and what if there're multiple doors that need to unlock.
+
+2.Grammar check, those are basically like, what if player type a lot of verb: lock lock lock
+look look look
+
+3.Words Ignore: what if player type in: 
+Go                                     north.
+or Go to to to to to to to to to to to north.
+or north
+or Go to the north.
+or Go to at north.
+or Go to to the to north.
+Which should be legal and which shouldn't, what's the response for illegal answer?
+
+4.Time system in this game is brilliant and also complex.
+Jill has a routine in a day. She'll mvoe to different rooms and do different things. She'll sometimes activaly talk to players and 
+that happen randomly or not separately from time system.
+The game has a transition from her one action to another. Such as, she lays down book, and walk into the kitchen.
+For example, when Jill finish painting, she would go to kitchen. But what if players are not in the same room with Jill? What if
+this room didn't have Jill last minutes? Even Jill goes back doing the same thing sometimes, but because the last thing is different,
+the transition should also be different. The random event, how to trigger them?
+
