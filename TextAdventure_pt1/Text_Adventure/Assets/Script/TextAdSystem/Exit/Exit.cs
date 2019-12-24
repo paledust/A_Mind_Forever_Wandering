@@ -7,6 +7,7 @@ public class Exit
 {
     public string keyString;
     public string exitDescription;
+    public int TimeToTake;
     public Room valueRoom;
 }
 

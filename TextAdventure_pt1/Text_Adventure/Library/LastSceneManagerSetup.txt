@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/InspectorTutorial.unity
+- path: Assets/DeathStranding/Main.unity
   isLoaded: 1
   isActive: 1

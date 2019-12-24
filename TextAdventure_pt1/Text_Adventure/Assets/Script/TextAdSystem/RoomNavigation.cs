@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class RoomNavigation : MonoBehaviour {
     public Room currentRoom;
+    public Room destination;
     [SerializeField] List<Room> roomList;
     public List<Room> RoomList{get{return roomList;}}
     Dictionary<string, Room> exitDictionary = new Dictionary<string, Room> ();
@@ -29,23 +29,35 @@ public class RoomNavigation : MonoBehaviour {
             exitDictionary.Add(currentRoom.exitWithDoor.keyString, currentRoom.exitWithDoor.valueRoom);
             DoorInRoom = currentRoom.exitWithDoor.connectedDoor;
         }
-
+    }
+    public void ReachRooms(){
+        currentRoom = destination;
+        TimeManager.SpeedUpTimeScale(1);
+        controller.ReachRoom();
     }
     public void AttemptToChangeRooms(string directionNoun)
     {
         if (exitDictionary.ContainsKey (directionNoun)) {
             //If this is a normal exit
             if(StringToExit.ContainsKey(directionNoun)){
-                currentRoom = exitDictionary [directionNoun];
-                controller.LogStringWithReturn ("He head off to the " + directionNoun);
-                controller.DisplayRoomText ();
+                destination = exitDictionary[directionNoun];
+                controller.LogStringWithReturn ("He head off to the " + directionNoun + "...");
+                controller.AddNewTimeToDestination(StringToExit[directionNoun]);
+                TimeManager.SpeedUpTimeScale(10);
+                controller.DisplayLoggedText();
+                // currentRoom = exitDictionary [directionNoun];
+                // controller.DisplayRoomText ();
             }
             //If this is an exit with door
             else if(currentRoom.exitWithDoor.connectedDoor != null){
                 if(!currentRoom.exitWithDoor.IF_Locked){
-                    currentRoom = exitDictionary [directionNoun];
+                    destination = exitDictionary[directionNoun];
                     controller.LogStringWithReturn ("He head off to the " + directionNoun);
-                    controller.DisplayRoomText ();
+                    controller.AddNewTimeToDestination(StringToExit[directionNoun]);
+                    TimeManager.SpeedUpTimeScale(10);
+                    controller.DisplayLoggedText();
+                    // currentRoom = exitDictionary [directionNoun];
+                    // controller.DisplayRoomText ();
                 }
                 else{
                     controller.LogStringWithReturn ("The door is closed.");

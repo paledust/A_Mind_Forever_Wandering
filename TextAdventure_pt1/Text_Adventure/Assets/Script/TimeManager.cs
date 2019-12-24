@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TimeManager : MonoBehaviour {
-	public static int WorldTime{get; protected set;}
+	public static int WorldTime;
 	private static bool StartCounting = false;
 	private static int newTime;
 	// Use this for initialization
@@ -20,9 +20,17 @@ public class TimeManager : MonoBehaviour {
 			Time.timeScale = 1;
 		}
 	}
-	public static void SpeedUpTime(int mins = 10){
+	public static void SpeedUpTime(int mins = 10, int timeScale = 100){
 		newTime = WorldTime + mins*60;
-		Time.timeScale = 100;
+		Time.timeScale = timeScale;
 		StartCounting = true;
+	}
+	public static void SpeedUpTimeScale(int timeScale = 100){
+		Debug.Log("SpeedingUp");
+		Time.timeScale = timeScale;
+	}
+
+	void OnGUI(){
+		GUILayout.Label("Game Time:" + WorldTime);
 	}
 }

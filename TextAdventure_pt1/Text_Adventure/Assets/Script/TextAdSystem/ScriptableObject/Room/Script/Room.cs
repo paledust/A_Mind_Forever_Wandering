@@ -15,4 +15,5 @@ public class Room : ScriptableObject
     [SerializeField] List<InteractableObject> _interactableObjectsInRoom;
     public List<InteractableObject> interactableObjectsInRoom{get{return _interactableObjectsInRoom;}}
     public List<Person> PersonInRoom;
+    public List<Construction> ConstructionsInRoom;
 }

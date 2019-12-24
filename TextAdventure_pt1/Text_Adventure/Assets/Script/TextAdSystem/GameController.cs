@@ -1,34 +1,42 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
+    public int EstimateTimeToDestination;
     [SerializeField] Text _displayText;
     public Text displayText{get{return _displayText;}}
     [SerializeField] InputAction[] _inputActions;
     public InputAction[] inputActions{get{return _inputActions;}}
     public RoomNavigation roomNavigation{get; private set;}
     public InteractableItems interactableItems{get; private set;}
+    public InteractableConstructions interactableConstructions{get; private set;}
     public InteractablePersons interactablePersons{get; private set;}
     private List<string> _interactionDescriptionsInRoom = new List<string>();
     public List<string> interactionDescriptionsInRoom{get{return _interactionDescriptionsInRoom;}}
     public List<string> Nonesense_Reply;
 
     List<string> actionLog = new List<string>();
+    bool Travelling = false;
 
     // Use this for initialization
-    void Awake () 
+    void Awake ()
     {
         interactableItems = GetComponent<InteractableItems>();
         roomNavigation = GetComponent<RoomNavigation> (); 
         interactablePersons = GetComponent<InteractablePersons>();
+        interactableConstructions = GetComponent<InteractableConstructions>();
     }
 
     void Start()
     {
         DisplayRoomText ();
         DisplayLoggedText ();
+    }
+    void FixedUpdate(){
+        if(Travelling){
+            DestinationTimeTesting();
+        }
     }
 
     public void DisplayLoggedText()
@@ -37,7 +45,11 @@ public class GameController : MonoBehaviour {
 
         _displayText.text = logAsText;
     }
-
+    public void ReachRoom(){
+        Travelling = false;
+        DisplayRoomText();
+        DisplayLoggedText();
+    }
     public void DisplayRoomText()
     {
         ClearCollectionsForNewRoom ();
@@ -87,6 +99,12 @@ public class GameController : MonoBehaviour {
             _interactionDescriptionsInRoom.Add(descriptionPersonInRoom);
         }
     }
+    void DestinationTimeTesting(){
+        if(TimeManager.WorldTime >= EstimateTimeToDestination){
+            Debug.Log("ReachDestination");
+            roomNavigation.ReachRooms();
+        }
+    }
 
     public string TestVerbDictionaryWithNoun(Dictionary<string,string> verbDictionary, string verb, string noun){
         if(verbDictionary.ContainsKey(noun)){
@@ -128,5 +146,9 @@ public class GameController : MonoBehaviour {
     public void MovePersonToRoom(Room _room, Person _person){
         RemovePersonFromRoom(interactablePersons.FindRoomThePersonIn(_person),_person);
         AddPersonToRoom(_room, _person);
+    }
+    public void AddNewTimeToDestination(Exit exit){
+        Travelling = true;
+        EstimateTimeToDestination = TimeManager.WorldTime + exit.TimeToTake*10;
     }
 }
