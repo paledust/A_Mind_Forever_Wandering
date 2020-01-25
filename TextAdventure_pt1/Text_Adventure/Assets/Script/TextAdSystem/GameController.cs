@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
     public int EstimateTimeToDestination;
+    public int TimeLeftToDestination{get; protected set;}
+
     [SerializeField] Text _displayText;
     public Text displayText{get{return _displayText;}}
     [SerializeField] InputAction[] _inputActions;
@@ -16,24 +18,28 @@ public class GameController : MonoBehaviour {
     public List<string> interactionDescriptionsInRoom{get{return _interactionDescriptionsInRoom;}}
     public List<string> Nonesense_Reply;
 
-    List<string> actionLog = new List<string>();
-    bool Travelling = false;
+    protected List<string> actionLog = new List<string>();
+    public bool Travelling{get; protected set;}
 
     // Use this for initialization
-    void Awake ()
+    protected void Awake ()
     {
+        Init();
+    }
+    protected virtual void Init(){
         interactableItems = GetComponent<InteractableItems>();
         roomNavigation = GetComponent<RoomNavigation> (); 
         interactablePersons = GetComponent<InteractablePersons>();
-        interactableConstructions = GetComponent<InteractableConstructions>();
+        interactableConstructions = GetComponent<InteractableConstructions>();      
+        Travelling = false;
     }
 
-    void Start()
+    protected void Start()
     {
         DisplayRoomText ();
         DisplayLoggedText ();
     }
-    void FixedUpdate(){
+    protected virtual void FixedUpdate(){
         if(Travelling){
             DestinationTimeTesting();
         }
@@ -73,7 +79,7 @@ public class GameController : MonoBehaviour {
         PrepareObjectToTakeOrExamine(roomNavigation.currentRoom);
         PreparePersonToInteract(roomNavigation.currentRoom);
     }
-    void PrepareObjectToTakeOrExamine(Room currenRoom){
+    protected void PrepareObjectToTakeOrExamine(Room currenRoom){
         for (int i = 0; i < currenRoom.interactableObjectsInRoom.Count; i++){
             string descriptionNotInInventory = interactableItems.GetObjectNotInInventory(currenRoom, i);
             if(descriptionNotInInventory != null){
@@ -93,13 +99,14 @@ public class GameController : MonoBehaviour {
             }
         }
     }
-    void PreparePersonToInteract(Room currentRoom){
+    protected void PreparePersonToInteract(Room currentRoom){
         for(int i = 0; i<currentRoom.PersonInRoom.Count; i++){
             string descriptionPersonInRoom = interactablePersons.GetPersonInThisRoom(currentRoom,i);
             _interactionDescriptionsInRoom.Add(descriptionPersonInRoom);
         }
     }
-    void DestinationTimeTesting(){
+    protected void DestinationTimeTesting(){
+        TimeLeftToDestination = Mathf.Max(0, EstimateTimeToDestination - TimeManager.WorldTime);
         if(TimeManager.WorldTime >= EstimateTimeToDestination){
             Debug.Log("ReachDestination");
             roomNavigation.ReachRooms();
@@ -114,7 +121,7 @@ public class GameController : MonoBehaviour {
         return "He can't "+verb+" "+noun;
     }
 
-    void ClearCollectionsForNewRoom()
+    protected void ClearCollectionsForNewRoom()
     {
         _interactionDescriptionsInRoom.Clear ();
         interactableItems.ClearCollections();
@@ -125,6 +132,7 @@ public class GameController : MonoBehaviour {
     {
         actionLog.Add (stringToAdd + "\n");
     }
+
     public void ReplyToNoneSense(){
         int rnd = Random.Range(0, Nonesense_Reply.Count);
 
@@ -147,8 +155,8 @@ public class GameController : MonoBehaviour {
         RemovePersonFromRoom(interactablePersons.FindRoomThePersonIn(_person),_person);
         AddPersonToRoom(_room, _person);
     }
-    public void AddNewTimeToDestination(Exit exit){
+    public void AddNewTimeToDestination(int NewTime){
         Travelling = true;
-        EstimateTimeToDestination = TimeManager.WorldTime + exit.TimeToTake*10;
+        EstimateTimeToDestination = TimeManager.WorldTime + NewTime*10;
     }
 }

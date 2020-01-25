@@ -42,7 +42,7 @@ public class RoomNavigation : MonoBehaviour {
             if(StringToExit.ContainsKey(directionNoun)){
                 destination = exitDictionary[directionNoun];
                 controller.LogStringWithReturn ("He head off to the " + directionNoun + "...");
-                controller.AddNewTimeToDestination(StringToExit[directionNoun]);
+                controller.AddNewTimeToDestination(StringToExit[directionNoun].TimeToTake);
                 TimeManager.SpeedUpTimeScale(10);
                 controller.DisplayLoggedText();
                 // currentRoom = exitDictionary [directionNoun];
@@ -53,7 +53,7 @@ public class RoomNavigation : MonoBehaviour {
                 if(!currentRoom.exitWithDoor.IF_Locked){
                     destination = exitDictionary[directionNoun];
                     controller.LogStringWithReturn ("He head off to the " + directionNoun);
-                    controller.AddNewTimeToDestination(StringToExit[directionNoun]);
+                    controller.AddNewTimeToDestination(StringToExit[directionNoun].TimeToTake);
                     TimeManager.SpeedUpTimeScale(10);
                     controller.DisplayLoggedText();
                     // currentRoom = exitDictionary [directionNoun];

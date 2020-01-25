@@ -30,13 +30,13 @@ public class TextInput : MonoBehaviour
             return;
         }
         if(Input.GetKeyDown(KeyCode.Escape)){
-            controller.LogStringWithReturn("Does Perry Simm want to stop?(Y/N)");
+            controller.LogStringWithReturn("Do you want to stop the journey?(Y/N)");
             IF_ReadyToEnd = true;
             InputComplete ();
             return;
         }
         if(userInput == ""){
-            controller.LogStringWithReturn("He doesn't know what to do.");
+            controller.LogStringWithReturn("You don't know what to do.");
             InputComplete();
             return;
         }
@@ -55,7 +55,7 @@ public class TextInput : MonoBehaviour
                 return;
             }
         }
-        controller.LogStringWithReturn("He doesn't know what " + "\"" + separatedInputWords[0] + "\"" + " means");
+        controller.LogStringWithReturn("You don't know what " + "\"" + separatedInputWords[0] + "\"" + " means");
         InputComplete();
         return;
 
@@ -68,14 +68,19 @@ public class TextInput : MonoBehaviour
         inputField.text = null;
     }
     void Handle_Exit(string answer){
-        if(answer == "y"){
+        if(answer == "y" || answer == "yes"){
             controller.QuitTheGame();
             return;
         }
-        if(answer == "n"){
+        if(answer == "n"||answer=="no"){
             IF_ReadyToEnd = false;
             InputComplete();
+            return;
         }
+
+        controller.LogStringWithReturn("Do you want to stop the journey?(Y/N)");
+        InputComplete();
+        return;
     }
     void OnValueChanged(string input){
         if(IF_ReadyToEnd){

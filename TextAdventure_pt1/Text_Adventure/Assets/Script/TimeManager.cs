@@ -26,11 +26,10 @@ public class TimeManager : MonoBehaviour {
 		StartCounting = true;
 	}
 	public static void SpeedUpTimeScale(int timeScale = 100){
-		Debug.Log("SpeedingUp");
 		Time.timeScale = timeScale;
 	}
 
-	void OnGUI(){
-		GUILayout.Label("Game Time:" + WorldTime);
-	}
+	// void OnGUI(){
+	// 	GUILayout.Label("Game Time:" + WorldTime);
+	// }
 }
